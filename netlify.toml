@@ -15,7 +15,7 @@
   node_bundler = "esbuild"
   external_node_modules = ["@prisma/client", ".prisma/client"]
   directory = "api/dist/functions"
-  # Diese Einstellung sorgt dafür, dass deine Funktionen in Europa laufen, was die Verbindung zur Railway-Datenbank stabilisiert.
+  # Setze die Region deiner Funktionen, um eine stabile Verbindung zur Datenbank zu gewährleisten.
   region = "eu-central-1"
 
 # To use Netlify Dev, install Netlify's CLI (`netlify-cli`) from NPM and use `netlify link`
