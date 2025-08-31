@@ -11,6 +11,7 @@ export const QUERY = gql`
   }
 `
 
+//Nur ein test
 export const Loading = () => <div>Loading...</div>
 
 export const Empty = () => <div>Empty</div>
