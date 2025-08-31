@@ -38,6 +38,6 @@ handlePrismaLogging({
  * Global Prisma client extensions should be added here, as $extend
  * returns a new instance.
  * export const db = prismaClient.$extend(...)
- * Add any .$on hooks before using $extend
+ * Add any .$on hooks before using $extend mach einen neuen deploy
  */
 export const db = prismaClient
