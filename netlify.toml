@@ -3,13 +3,20 @@
   publish = "web/dist"
   functions = "api/dist/functions"
 
-  [build.environment]
-    NODE_VERSION = "20"
+[build.environment]
+  NODE_VERSION = "20"
 
 [[redirects]]
   from = "/*"
   to = "/200.html"
   status = 200
+
+[functions]
+  node_bundler = "esbuild"
+  external_node_modules = ["@prisma/client", ".prisma/client"]
+  directory = "api/dist/functions"
+  # Diese Einstellung sorgt dafür, dass deine Funktionen in Europa laufen, was die Verbindung zur Railway-Datenbank stabilisiert.
+  region = "eu-central-1"
 
 # To use Netlify Dev, install Netlify's CLI (`netlify-cli`) from NPM and use `netlify link`
 # to connect your local project to a site on Netlify. Then run `netlify dev`.
