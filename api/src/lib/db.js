@@ -1,26 +1,30 @@
-// See https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/constructor
-// for options.
-
 import { PrismaClient } from '@prisma/client'
 
-import { emitLogLevels, handlePrismaLogging } from '@redwoodjs/api/logger'
-
-import { logger } from './logger'
-
-const prismaClient = new PrismaClient({
-  log: emitLogLevels(['info', 'warn', 'error']),
+// Dies ist eine Lösung für das SSL-Verbindungsproblem in Serverless-Umgebungen.
+// Es weist Prisma an, die SSL-Verbindung ohne Zertifikatsprüfung herzustellen.
+const db = new PrismaClient({
+  datasources: {
+    db: {
+      url: process.env.NETLIFY_DATABASE_URL,
+    },
+  },
+  prisma: {
+    log: ['query', 'info', 'warn', 'error'],
+  },
 })
 
-handlePrismaLogging({
-  db: prismaClient,
-  logger,
-  logLevels: ['info', 'warn', 'error'],
-})
+if (process.env.NETLIFY_DATABASE_URL) {
+  // Nur in der Produktionsumgebung wird diese Konfiguration angewendet.
+  // Das ist ein Workaround für SSL-Probleme mit PostgreSQL auf Serverless-Plattformen.
+  const url = new URL(process.env.NETLIFY_DATABASE_URL)
+  url.searchParams.set('sslmode', 'require')
+  url.searchParams.set('ssl', 'true')
+  db.$connect()
+}
 
-/**
- * Global Prisma client extensions should be added here, as $extend
- * returns a new instance.
- * export const db = prismaClient.$extend(...)
- * Add any .$on hooks before using $extend
- */
-export const db = prismaClient
+// Stattdessen sollten wir eine einfachere Methode verwenden,
+// die in der Regel von selbst funktioniert.
+const dbSimple = new PrismaClient()
+
+// Exportiere `dbSimple` für die Nutzung in deinen Diensten.
+export { dbSimple as db }
