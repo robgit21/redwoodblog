@@ -7,12 +7,16 @@ import { emitLogLevels, handlePrismaLogging } from '@redwoodjs/api/logger'
 
 import { logger } from './logger'
 
-// Workaround for SSL/TLS issue on Netlify with PostgreSQL.
-// The `sslmode=no-verify` parameter tells the Prisma client to not verify the SSL certificate,
-// which is often necessary in serverless environments.
+// This is a more robust workaround for SSL/TLS issues with Netlify and PostgreSQL.
+// It correctly appends the `sslmode=no-verify` parameter without corrupting the URL
+// in case it already contains query parameters.
 let dbUrl = process.env.DATABASE_URL
-if (dbUrl && !dbUrl.includes('sslmode')) {
-  dbUrl += '?sslmode=no-verify'
+if (dbUrl) {
+  const hasParams = dbUrl.includes('?')
+  const sslParam = 'sslmode=no-verify'
+  if (!dbUrl.includes(sslParam)) {
+    dbUrl += hasParams ? `&${sslParam}` : `?${sslParam}`
+  }
 }
 
 const prismaClient = new PrismaClient({
