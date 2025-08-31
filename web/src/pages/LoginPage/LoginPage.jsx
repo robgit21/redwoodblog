@@ -17,6 +17,7 @@ import { useAuth } from 'src/auth'
 const LoginPage = () => {
   const { isAuthenticated, logIn } = useAuth()
 
+  // Falls User schon eingeloggt ist -> direkt nach Home
   useEffect(() => {
     if (isAuthenticated) {
       navigate(routes.home())
@@ -40,6 +41,7 @@ const LoginPage = () => {
       toast.error(response.error)
     } else {
       toast.success('Welcome back!')
+      navigate(routes.home()) // 👉 hier der direkte Redirect nach erfolgreichem Login
     }
   }
 
