@@ -23,5 +23,14 @@
   "packageManager": "yarn@4.6.0",
   "resolutions": {
     "@storybook/react-dom-shim@npm:7.6.20": "https://verdaccio.tobbe.dev/@storybook/react-dom-shim/-/react-dom-shim-8.0.8.tgz"
+  },
+  "dependencies": {
+    "lodash": "^4.17.21"
+  },
+  "scripts": {
+    "format-prisma": "yarn rw prisma format",
+    "migrate-dev": "yarn rw prisma migrate dev",
+    "db-push": "yarn rw prisma db push",
+    "prisma-all": "yarn rw prisma format && yarn rw prisma db push"
   }
 }
