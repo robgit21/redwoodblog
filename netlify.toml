@@ -1,5 +1,5 @@
 [build]
-  command = "yarn rw deploy netlify"
+  command = "yarn rw build && yarn rw prisma migrate deploy && yarn rw data-migrate up"
   publish = "web/dist"
   functions = "api/dist/functions"
 
